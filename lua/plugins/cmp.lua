@@ -1,5 +1,4 @@
 return {
-	-- Autocompletion
 	"hrsh7th/nvim-cmp",
 	dependencies = {
 		-- Snippet Engine & its associated nvim-cmp source
@@ -14,28 +13,25 @@ return {
 		"rafamadriz/friendly-snippets",
 	},
 	config = function()
-		-- [[ Configure nvim-cmp ]]
-		-- See `:help cmp`
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
+
+		-- Lazy load VSCode-like snippets
 		require("luasnip.loaders.from_vscode").lazy_load()
 		luasnip.config.setup({})
+
+		-- Configure nvim-cmp
 		cmp.setup({
-			-- window = {
-			--   completion = cmp.config.window.bordered(),
-			--   documentation = cmp.config.window.bordered(),
-			-- },
 			formatting = {
 				format = require("lspkind").cmp_format({
 					mode = "symbol_text",
 					maxwidth = 50,
 					ellipsis_char = "...",
-					symbol_map = { Codeium = "" },
 				}),
 			},
 			snippet = {
 				expand = function(args)
-					luasnip.lsp_expand(args.body)
+					luasnip.lsp_expand(args.body) -- For `luasnip` users
 				end,
 			},
 			mapping = cmp.mapping.preset.insert({
@@ -45,15 +41,12 @@ return {
 				["<C-k>"] = cmp.mapping.select_prev_item(),
 				["<C-d>"] = cmp.mapping.scroll_docs(-4),
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
-				["<C-Space>"] = cmp.mapping.complete({}),
-				["<CR>"] = cmp.mapping.confirm({
-					behavior = cmp.ConfirmBehavior.Replace,
-					select = true,
-				}),
+				["<C-Space>"] = cmp.mapping.complete(),
+				["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept selected suggestion
 				["<Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
 						cmp.select_next_item()
-					elseif luasnip.expand_or_locally_jumpable() then
+					elseif luasnip.expand_or_jumpable() then
 						luasnip.expand_or_jump()
 					else
 						fallback()
@@ -62,21 +55,20 @@ return {
 				["<S-Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
 						cmp.select_prev_item()
-					elseif luasnip.locally_jumpable(-1) then
+					elseif luasnip.jumpable(-1) then
 						luasnip.jump(-1)
 					else
 						fallback()
 					end
 				end, { "i", "s" }),
 			}),
-			sources = {
+			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
-				{ name = "crates" },
-				{ name = "codeium" },
-				{ name = "path" },
-				{ name = "buffer" },
-			},
+				{ name = "buffer" }, -- Include buffer completion
+				{ name = "path" }, -- Path completions
+				{ name = "crates" }, -- Rust-specific completions
+			}),
 		})
 	end,
 }

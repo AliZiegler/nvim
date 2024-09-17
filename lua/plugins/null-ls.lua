@@ -1,13 +1,17 @@
 return {
 	"nvimtools/none-ls.nvim",
 	event = { "BufReadPre", "BufNewFile" },
-	dependencies = { "mason.nvim", "jay-babu/mason-null-ls.nvim", "nvimtools/none-ls-extras.nvim" },
+	dependencies = {
+		"williamboman/mason.nvim",
+		"jay-babu/mason-null-ls.nvim",
+		"nvimtools/none-ls-extras.nvim",
+	},
 	opts = function()
 		local null_ls = require("null-ls")
 		local formatting = null_ls.builtins.formatting
 		local diagnostics = null_ls.builtins.diagnostics
-
 		local code_actions = null_ls.builtins.code_actions
+
 		require("mason-null-ls").setup({
 			ensure_installed = {
 				"prettier",
@@ -17,16 +21,18 @@ return {
 			},
 			automatic_installation = true,
 		})
+
 		return {
 			sources = {
-				-- js
+				-- JavaScript and TypeScript formatting and diagnostics
 				formatting.prettier,
-				require("none-ls.diagnostics.eslint"),
+				diagnostics.eslint,
 
-				-- lua
+				-- Lua formatting
 				formatting.stylua,
-				-- diagnostics.selene,
+				-- diagnostics.selene, -- Optional if you want to add selene
 
+				-- Git-related actions
 				code_actions.gitsigns,
 				code_actions.refactoring,
 			},
