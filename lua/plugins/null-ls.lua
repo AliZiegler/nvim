@@ -1,11 +1,7 @@
 return {
 	"nvimtools/none-ls.nvim",
 	event = { "BufReadPre", "BufNewFile" },
-	dependencies = {
-		"williamboman/mason.nvim",
-		"jay-babu/mason-null-ls.nvim",
-		"nvimtools/none-ls-extras.nvim",
-	},
+	dependencies = { "mason.nvim", "jay-babu/mason-null-ls.nvim", "nvimtools/none-ls-extras.nvim" },
 	opts = function()
 		local null_ls = require("null-ls")
 		local formatting = null_ls.builtins.formatting
@@ -24,18 +20,19 @@ return {
 
 		return {
 			sources = {
-				-- JavaScript and TypeScript formatting and diagnostics
+				-- JavaScript/TypeScript
 				formatting.prettier,
-				diagnostics.eslint,
+				require("none-ls.diagnostics.eslint"),
 
-				-- Lua formatting
+				-- Lua
 				formatting.stylua,
-				-- diagnostics.selene, -- Optional if you want to add selene
+				-- diagnostics.selene,
 
-				-- Git-related actions
+				-- Git and refactoring tools
 				code_actions.gitsigns,
 				code_actions.refactoring,
 			},
 		}
 	end,
 }
+
