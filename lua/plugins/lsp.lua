@@ -26,8 +26,7 @@ return {
 			vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
 			vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
 			vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
-			vim.keymap.set("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>",
-				{ buffer = bufnr, desc = "Replace" })
+			vim.keymap.set("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", { buffer = bufnr, desc = "Replace" })
 			vim.keymap.set(
 				{ "n", "x" },
 				"<leader>lf",
@@ -50,14 +49,13 @@ return {
 		require("mason").setup({})
 		require("mason-lspconfig").setup({
 			ensure_installed = {
-				"tsserver",  -- TypeScript/JavaScript
-				"eslint",    -- JavaScript/TypeScript linting
-				"sumneko_lua",  -- Lua (useful for Neovim config)
-				"pyright",   -- Python
-				"html",      -- HTML
-				"cssls",     -- CSS
-				"jsonls",    -- JSON
-				"bashls",    -- Bash
+				"tsserver", -- TypeScript/JavaScript
+				"sumneko_lua", -- Lua (useful for Neovim config)
+				"pyright", -- Python
+				"html", -- HTML
+				"cssls", -- CSS
+				"jsonls", -- JSON
+				"bashls", -- Bash
 			},
 			automatic_installation = true,
 			handlers = {
@@ -68,4 +66,3 @@ return {
 		})
 	end,
 }
-

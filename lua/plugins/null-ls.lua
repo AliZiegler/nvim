@@ -16,7 +16,6 @@ return {
 		require("mason-null-ls").setup({
 			ensure_installed = {
 				"prettier",
-				"eslint-lsp",
 				"stylua",
 				"selene",
 			},
@@ -26,9 +25,6 @@ return {
 		-- Configure null-ls
 		null_ls.setup({
 			sources = {
-				-- JavaScript/TypeScript
-				formatting.prettier,
-				require("none-ls.diagnostics.eslint"),
 
 				-- Lua
 				formatting.stylua,
