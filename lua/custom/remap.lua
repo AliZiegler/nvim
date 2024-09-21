@@ -16,3 +16,5 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from clipboard" })
 --telescope themes
 vim.keymap.set("n", "<leader>th", ":Telescope themes<CR>", { noremap = true, silent = true, desc = "Theme Switcher" })
+--Twilight
+vim.keymap.set("n", "<leader>tw", ":Twilight<CR>", { noremap = true, silent = true, desc = "Twilight" })
