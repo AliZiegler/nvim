@@ -2,6 +2,7 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>q", ":q!<CR>")
 vim.keymap.set("n", "<leader>w", ":w!<CR>")
+vim.keymap.set("n", "<leader>hi", ":noh<CR>", { desc = "Hide search highlight" })
 
 --vim.keymap.set("i", ";j", "<Esc>", { silent = true, desc = "which_key_ignore" })
 --vim.keymap.set({ "o", "v", "n", "x" }, ";j", "<Esc>", { silent = true, desc = "Normal Mode" })
@@ -18,14 +19,6 @@ vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from clipboar
 vim.keymap.set("n", "<leader>th", ":Telescope themes<CR>", { noremap = true, silent = true, desc = "Theme Switcher" })
 --Twilight
 vim.keymap.set("n", "<leader>tw", ":Twilight<CR>", { noremap = true, silent = true, desc = "Twilight" })
---vim-surround
-vim.keymap.set("n", "<leader>ds", ":", { noremap = true, silent = true, desc = "Delete Surround" })
-vim.keymap.set("n", "<leader>cs", "cs", { noremap = true, silent = true, desc = "Change Surround" })
-vim.keymap.set("n", "<leader>cc", "cst", { noremap = true, silent = true, desc = "Go full circle" })
-vim.keymap.set("n", "<leader>ys", "ys", { noremap = true, silent = true, desc = "Add Surround" })
-vim.keymap.set("n", "<leader>yw", "ysiw", { noremap = true, silent = true, desc = "Surround Inner Word" })
-vim.keymap.set("n", "<leader>yl", "yss", { noremap = true, silent = true, desc = "Wrap an entire line" })
-vim.keymap.set("v", "S", "S", { noremap = true, silent = true, desc = "Surround Visual Selection" })
 --vim-smooth-scroll
 vim.keymap.set(
     "n",
