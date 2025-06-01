@@ -1,3 +1,7 @@
+vim.cmd([[
+  filetype plugin indent on    " enable filetype detection and ftplugins
+  syntax on                     " enable Vim’s built-in syntax highlighting
+]])
 -- Load Lazy, key mappings, and options
 require("custom.lazy")
 require("custom.remap")
