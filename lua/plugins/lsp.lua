@@ -18,6 +18,7 @@ return {
     },
     config = function()
         local lsp_zero = require("lsp-zero")
+        local lspconfig = require("lspconfig")
 
         -- lsp_attach: attach keymaps after LSP attaches to buffer
         local lsp_attach = function(_, bufnr)
@@ -52,7 +53,7 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "tsserver", -- TypeScript/JavaScript
+                "ts_ls", -- TypeScript/JavaScript (updated name)
                 "eslint", -- ESLint
                 "tailwindcss", -- Tailwind CSS
                 "cssls", -- CSS
@@ -69,11 +70,47 @@ return {
             handlers = {
                 -- Custom handler for html-lsp -> lspconfig.html
                 ["html-lsp"] = function()
-                    require("lspconfig").html.setup({})
+                    lspconfig.html.setup({})
                 end,
+
+                -- Custom handler for TypeScript server (for Next.js/Node projects)
+                ["ts_ls"] = function()
+                    lspconfig.ts_ls.setup({
+                        root_dir = lspconfig.util.root_pattern("package.json"),
+                        single_file_support = false,
+                    })
+                end,
+
+                -- Custom handler for Deno (only for Deno projects)
+                ["denols"] = function()
+                    lspconfig.denols.setup({
+                        root_dir = function(fname)
+                            local has_deno = lspconfig.util.root_pattern("deno.json", "deno.jsonc")(fname)
+                            local has_package = lspconfig.util.root_pattern("package.json")(fname)
+                            -- Only use Deno if there's a deno config AND no package.json
+                            return has_deno and not has_package
+                        end,
+                        init_options = {
+                            lint = true,
+                        },
+                        -- Explicitly exclude TypeScript files in Node.js projects
+                        filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+                        on_attach = function(client, bufnr)
+                            -- Check if we're in a Node.js project
+                            local has_package =
+                                lspconfig.util.root_pattern("package.json")(vim.api.nvim_buf_get_name(bufnr))
+                            if has_package then
+                                -- Stop Deno LSP if we're in a Node.js project
+                                vim.lsp.stop_client(client.id)
+                                return
+                            end
+                        end,
+                    })
+                end,
+
                 -- default handler for other servers
                 function(server_name)
-                    require("lspconfig")[server_name].setup({})
+                    lspconfig[server_name].setup({})
                 end,
             },
         })

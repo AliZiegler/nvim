@@ -21,3 +21,16 @@ vim.g.maplocalleader = "\\"
 -- -- Custom highlight for TypeScript files (Blue)
 -- vim.cmd([[autocmd FileType typescript highlight CustomTS guifg=#61AFEF]])
 -- vim.cmd([[autocmd FileType typescript syntax match CustomTS /\v.*/ | highlight link CustomTS Statement]])
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client.name == "denols" then
+            -- Check if we're in a Node.js project
+            local has_package_json = vim.fn.findfile("package.json", ".;") ~= ""
+            if has_package_json then
+                vim.lsp.stop_client(client.id)
+                print("Stopped Deno LSP in Node.js project")
+            end
+        end
+    end,
+})
